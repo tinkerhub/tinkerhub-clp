@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TinkerHub Campus Leadership Programme 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1008;
+      --cream: #fdf6ec;
+      --magenta: #e8176a;
+      --teal: #00b4a6;
+      --yellow: #f5c700;
+      --purple: #7c3aed;
+      --stroke: 2.5px solid var(--ink);
+      --shadow: 4px 4px 0 var(--ink);
+      --shadow-lg: 6px 6px 0 var(--ink);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+
+    /* ────────────────────────────────────────────
+       ANIMATIONS
+    ──────────────────────────────────────────── */
+
+    /* Hero load-in keyframes */
+    @keyframes wordPop {
+      0%   { opacity: 0; transform: translateY(36px) scale(0.65) rotate(-2deg); }
+      55%  { transform: translateY(-8px) scale(1.1) rotate(1deg); }
+      75%  { transform: translateY(4px) scale(0.96) rotate(-.5deg); }
+      100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideFromRight {
+      from { opacity: 0; transform: translateX(56px) rotate(1deg); }
+      to   { opacity: 1; transform: translateX(0) rotate(0); }
+    }
+    @keyframes pillBounce {
+      0%   { opacity: 0; transform: scale(0.6) translateY(-12px); }
+      60%  { transform: scale(1.1) translateY(2px); }
+      80%  { transform: scale(0.97) translateY(-1px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Scroll-reveal keyframes */
+    @keyframes revealUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bubblePop {
+      0%   { opacity: 0; transform: scale(0) rotate(-8deg); }
+      55%  { transform: scale(1.22) rotate(4deg); }
+      75%  { transform: scale(0.93) rotate(-2deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0); }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-48px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(48px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes blobDrift {
+      0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+      33%       { transform: translateY(-18px) rotate(4deg) scale(1.03); }
+      66%       { transform: translateY(12px) rotate(-3deg) scale(0.97); }
+    }
+    @keyframes spinStar {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    @keyframes badgeBob {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-5px); }
+    }
+    @keyframes tickerDotWiggle {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      30%       { transform: rotate(22deg) scale(1.2); }
+      70%       { transform: rotate(-18deg) scale(1.15); }
+    }
+
+    /* Hero element animations (load) */
+    .hero-pill-anim  { animation: pillBounce   0.55s cubic-bezier(0.34,1.56,0.64,1) 0.1s  both; }
+    .hero-word       { display: inline-block; animation: wordPop 0.7s cubic-bezier(0.34,1.56,0.64,1) both; }
+    .hero-word:nth-child(1) { animation-delay: 0.18s; }
+    .hero-word:nth-child(2) { animation-delay: 0.30s; }
+    .hero-word:nth-child(3) { animation-delay: 0.44s; }
+    .hero-word:nth-child(4) { animation-delay: 0.58s; }
+    .hero-p-anim     { animation: fadeSlideUp  0.55s ease 0.78s both; }
+    .hero-btns-anim  { animation: fadeSlideUp  0.55s ease 0.94s both; }
+    .hero-img-anim   { animation: slideFromRight 0.75s cubic-bezier(0.25,0.46,0.45,0.94) 0.25s both; }
+    .hero-stat-anim  { animation: fadeSlideUp  0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
+    .hero-stat-anim:nth-child(1) { animation-delay: 1.05s; }
+    .hero-stat-anim:nth-child(2) { animation-delay: 1.15s; }
+    .hero-stat-anim:nth-child(3) { animation-delay: 1.25s; }
+
+    /* Floating blobs */
+    .blob-1 { animation: blobDrift  9s ease-in-out infinite; }
+    .blob-2 { animation: blobDrift 11s ease-in-out 1.5s infinite; }
+
+    /* Badge bob */
+    .hero-photo-badge { animation: badgeBob 3s ease-in-out 1.5s infinite; }
+
+    /* Ticker dot wiggle */
+    .ticker-inner span.dot { display: inline-block; animation: tickerDotWiggle 2.2s ease-in-out infinite; }
+
+    /* ── SCROLL REVEAL SYSTEM ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.55s cubic-bezier(0.25,0.46,0.45,0.94),
+                  transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .reveal.pop {
+      transform: scale(0.75) translateY(16px);
+      transition: opacity 0.5s ease,
+                  transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .reveal.from-left  { transform: translateX(-44px); transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .reveal.from-right { transform: translateX(44px);  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .reveal.visible    { opacity: 1; transform: none; }
+    .reveal[data-d="1"] { transition-delay: 0.05s; }
+    .reveal[data-d="2"] { transition-delay: 0.12s; }
+    .reveal[data-d="3"] { transition-delay: 0.19s; }
+    .reveal[data-d="4"] { transition-delay: 0.26s; }
+    .reveal[data-d="5"] { transition-delay: 0.33s; }
+    .reveal[data-d="6"] { transition-delay: 0.40s; }
+    .reveal[data-d="7"] { transition-delay: 0.47s; }
+    .reveal[data-d="8"] { transition-delay: 0.54s; }
+
+    /* ── HOVER MICRO-INTERACTIONS ── */
+    .pillar-card {
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+    }
+    .pillar-card:hover { transform: translate(-3px,-3px); box-shadow: 7px 7px 0 var(--ink); }
+
+    .story-card {
+      transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .story-card:not(.story-photo-card):hover { transform: translateY(-5px); }
+
+    .activity-cell:not(.activity-cta) {
+      transition: background 0.15s ease;
+    }
+    .activity-cell:not(.activity-cta):hover { background: #fef9f2; }
+
+    .journey-circle {
+      transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.18s ease;
+    }
+    .journey-node:hover .journey-circle {
+      transform: scale(1.14) rotate(-6deg);
+      box-shadow: 6px 6px 0 var(--ink);
+    }
+
+    .award-panel {
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .award-panel:hover { transform: translateY(-4px); }
+
+    /* ── TICKER ── */
+    .ticker-wrap { background: var(--ink); color: var(--yellow); overflow: hidden; white-space: nowrap; padding: 10px 0; position: relative; z-index: 100; }
+    .ticker-inner { display: inline-flex; animation: ticker 28s linear infinite; }
+    .ticker-inner span { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: .08em; padding: 0 48px; }
+    .ticker-inner span.dot { color: var(--magenta); padding: 0 4px; }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* ── NAV ── */
+    nav { position: sticky; top: 0; z-index: 90; background: var(--cream); border-bottom: var(--stroke); display: flex; align-items: center; justify-content: space-between; padding: 14px 40px; }
+    .nav-logo { font-family: 'Lilita One', cursive; font-size: 20px; color: var(--ink); text-decoration: none; }
+    .nav-logo span { color: var(--magenta); }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink); text-decoration: none; letter-spacing: .06em; transition: color .15s; }
+    .nav-links a:hover { color: var(--magenta); }
+    .nav-cta { background: var(--magenta); color: var(--cream) !important; padding: 8px 20px; border: var(--stroke); box-shadow: var(--shadow); font-weight: 700 !important; transition: transform .12s, box-shadow .12s; }
+    .nav-cta:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow-lg); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--magenta);
+      border-bottom: var(--stroke);
+      padding: 0 40px;
+      position: relative;
+      overflow: hidden;
+      min-height: 80vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr auto;
+      align-items: center;
+    }
+    .hero-blobs { position: absolute; inset: 0; pointer-events: none; }
+    .hero-blobs svg { position: absolute; }
+    .hero-content { position: relative; z-index: 2; padding: 80px 0 60px; grid-column: 1; grid-row: 1; }
+    .hero-image-col { grid-column: 2; grid-row: 1; position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; padding: 48px 0 48px 40px; }
+    .hero-photo-wrap { position: relative; width: 100%; }
+    .hero-photo { width: 100%; height: 440px; object-fit: cover; display: block; border: 2.5px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+    .hero-photo-badge {
+      position: absolute; bottom: 16px; left: 20px;
+      background: var(--yellow); border: var(--stroke); box-shadow: var(--shadow);
+      border-radius: 999px; font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: .06em; padding: 7px 18px; white-space: nowrap;
+    }
+    .pill { display: inline-block; background: var(--cream); border: var(--stroke); border-radius: 999px; padding: 6px 18px; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: .06em; box-shadow: var(--shadow); margin-bottom: 24px; }
+    .hero h1 { font-family: 'Lilita One', cursive; font-size: clamp(52px, 6vw, 88px); line-height: 1.0; color: var(--cream); -webkit-text-stroke: 2px var(--ink); text-shadow: 5px 5px 0 var(--ink); margin-bottom: 24px; letter-spacing: -.01em; }
+    .hero p { font-size: 18px; max-width: 480px; line-height: 1.6; color: var(--cream); margin-bottom: 36px; font-weight: 500; }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary { background: var(--yellow); color: var(--ink); font-family: 'Lilita One', cursive; font-size: 18px; padding: 14px 36px; border: var(--stroke); box-shadow: var(--shadow-lg); text-decoration: none; transition: transform .12s cubic-bezier(0.34,1.56,0.64,1), box-shadow .12s; display: inline-block; }
+    .btn-primary:hover { transform: translate(-3px,-3px); box-shadow: 9px 9px 0 var(--ink); }
+    .btn-secondary { background: transparent; color: var(--cream); font-family: 'Lilita One', cursive; font-size: 18px; padding: 14px 36px; border: 2.5px solid var(--cream); text-decoration: none; transition: background .15s, color .15s; display: inline-block; }
+    .btn-secondary:hover { background: var(--cream); color: var(--ink); }
+    .hero-stats { grid-column: 1 / -1; grid-row: 2; display: flex; gap: 0; position: relative; z-index: 2; border-top: var(--stroke); }
+    .hero-stat { background: var(--cream); border-right: var(--stroke); padding: 20px 36px; flex: 1; }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-num { font-family: 'Lilita One', cursive; font-size: 40px; color: var(--magenta); -webkit-text-stroke: 1px var(--ink); display: block; }
+    .hero-stat-label { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .06em; color: var(--ink); opacity: .7; }
+
+    /* ── SECTIONS BASE ── */
+    section { padding: 80px 40px; }
+    .section-label { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; opacity: .75; }
+    h2 { font-family: 'Lilita One', cursive; font-size: clamp(36px, 5vw, 64px); line-height: 1.05; margin-bottom: 20px; }
+    .rule { border: none; border-top: var(--stroke); margin: 0 40px; }
+
+    /* ── PHOTO STRIP ── */
+    .photo-strip { position: relative; border-top: var(--stroke); border-bottom: var(--stroke); overflow: hidden; }
+    .photo-strip-img { width: 100%; height: 340px; object-fit: cover; display: block; object-position: center 40%; }
+    .photo-strip-caption { position: absolute; bottom: 20px; right: 28px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; color: var(--cream); background: rgba(26,16,8,.6); padding: 5px 14px; border-radius: 999px; }
+
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 48px; align-items: start; }
+    .about-copy p { font-size: 17px; line-height: 1.75; margin-bottom: 20px; color: #2d1f0e; }
+    .about-pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .pillar-card { background: var(--cream); border: var(--stroke); box-shadow: var(--shadow); padding: 24px; }
+    .pillar-num { font-family: 'Lilita One', cursive; font-size: 48px; color: var(--magenta); -webkit-text-stroke: 1px var(--ink); line-height: 1; display: block; margin-bottom: 8px; }
+    .pillar-card h3 { font-family: 'Lilita One', cursive; font-size: 18px; margin-bottom: 6px; }
+    .pillar-card p { font-size: 14px; line-height: 1.5; opacity: .75; }
+    .pull-quote { background: var(--yellow); border: var(--stroke); box-shadow: var(--shadow-lg); padding: 28px 32px; margin-top: 32px; font-family: 'Lilita One', cursive; font-size: 22px; line-height: 1.3; position: relative; }
+    .pull-quote-asterisk { position: absolute; top: 12px; right: 16px; opacity: .3; }
+
+    /* ── JOURNEY — timeline ── */
+    .journey { background: var(--teal); border-top: var(--stroke); border-bottom: var(--stroke); }
+    .journey h2 { color: var(--cream); -webkit-text-stroke: 1px var(--ink); text-shadow: 3px 3px 0 rgba(0,0,0,.2); }
+    .journey .section-label { color: var(--cream); opacity: .75; }
+    .journey-timeline { display: flex; gap: 0; margin-top: 56px; position: relative; align-items: flex-start; }
+    .journey-timeline::before { content: ''; position: absolute; top: 33px; left: 10%; right: 10%; height: 2.5px; background: rgba(255,255,255,.35); z-index: 0; }
+    .journey-node { flex: 1; padding: 0 12px; position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .journey-circle { width: 68px; height: 68px; background: var(--yellow); border: var(--stroke); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Lilita One', cursive; font-size: 26px; color: var(--ink); box-shadow: var(--shadow); margin-bottom: 20px; flex-shrink: 0; }
+    .step-pill { background: var(--ink); color: var(--yellow); font-family: 'Space Mono', monospace; font-size: 10px; padding: 3px 10px; border-radius: 999px; display: inline-block; margin-bottom: 10px; letter-spacing: .06em; }
+    .journey-node h3 { font-family: 'Lilita One', cursive; font-size: 17px; margin-bottom: 8px; color: var(--cream); -webkit-text-stroke: .5px var(--ink); }
+    .journey-node p { font-size: 13px; line-height: 1.55; color: var(--cream); opacity: .85; }
+
+    /* ── ACTIVITIES ── */
+    .activities-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: var(--stroke); margin-top: 48px; }
+    .activity-cell { border-right: var(--stroke); border-bottom: var(--stroke); position: relative; }
+    .activity-cell-content { padding: 32px 28px; }
+    .activity-cell:nth-child(4n) { border-right: none; }
+    .activity-cell:nth-last-child(-n+4) { border-bottom: none; }
+    .activity-cell-img { width: 100%; height: 120px; object-fit: cover; display: block; border-bottom: var(--stroke); }
+    .act-num { font-family: 'Lilita One', cursive; font-size: 40px; color: var(--magenta); -webkit-text-stroke: 1px var(--ink); display: block; line-height: 1; margin-bottom: 8px; }
+    .activity-cell h3 { font-family: 'Lilita One', cursive; font-size: 18px; margin-bottom: 6px; }
+    .activity-cell p { font-size: 13px; line-height: 1.5; opacity: .7; }
+    .activity-cta { background: var(--magenta); color: var(--cream); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: none; border-bottom: none; }
+    .activity-cta .activity-cell-content { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; padding: 40px 28px; }
+    .activity-cta p { color: var(--cream); opacity: 1; font-weight: 700; font-size: 16px; }
+
+    /* ── WHY KERALA ── */
+    .why { background: var(--purple); border-top: var(--stroke); border-bottom: var(--stroke); }
+    .why h2 { color: var(--cream); -webkit-text-stroke: 1px var(--ink); text-shadow: 3px 3px 0 rgba(0,0,0,.2); }
+    .why .section-label { color: var(--cream); }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 48px; align-items: start; }
+    .why-data { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: var(--stroke); }
+    .data-cell { background: var(--cream); border-right: var(--stroke); border-bottom: var(--stroke); padding: 24px 20px; }
+    .data-cell:nth-child(2n) { border-right: none; }
+    .data-cell:nth-last-child(-n+2) { border-bottom: none; }
+    .data-num { font-family: 'Lilita One', cursive; font-size: 44px; color: var(--purple); -webkit-text-stroke: 1px var(--ink); display: block; line-height: 1; margin-bottom: 6px; }
+    .data-cell p { font-size: 13px; line-height: 1.4; opacity: .75; }
+    .why-reasons { display: flex; flex-direction: column; gap: 0; }
+    .reason { padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,.2); display: flex; gap: 20px; align-items: flex-start; }
+    .reason:first-child { padding-top: 0; }
+    .reason:last-child { border-bottom: none; padding-bottom: 0; }
+    .reason-num { font-family: 'Lilita One', cursive; font-size: 32px; color: var(--yellow); -webkit-text-stroke: 1px var(--ink); line-height: 1; min-width: 40px; }
+    .reason h3 { font-family: 'Lilita One', cursive; font-size: 17px; margin-bottom: 4px; color: var(--cream); }
+    .reason p { font-size: 13px; line-height: 1.5; color: var(--cream); opacity: .75; }
+
+    /* ── PRESS — editorial ── */
+    .press-editorial { margin-top: 56px; }
+    .press-quote-row { display: grid; grid-template-columns: 72px 1fr 140px; gap: 32px; align-items: start; padding: 40px 0; border-bottom: var(--stroke); }
+    .press-quote-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .press-qmark { font-family: 'Lilita One', cursive; font-size: 110px; color: var(--magenta); line-height: .75; -webkit-text-stroke: 1px var(--ink); display: block; }
+    .press-quote-row blockquote { font-size: 18px; line-height: 1.7; font-style: italic; color: #2d1f0e; padding-top: 6px; }
+    .press-source { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: .08em; color: var(--magenta); padding-top: 14px; display: block; text-align: right; }
+
+    /* ── STORIES — 2×2 ── */
+    .stories { background: var(--yellow); border-top: var(--stroke); border-bottom: var(--stroke); }
+    .stories-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: var(--stroke); margin-top: 48px; }
+    .story-card { background: var(--cream); border-right: var(--stroke); border-bottom: var(--stroke); padding: 32px 28px; }
+    .story-card:nth-child(2n) { border-right: none; }
+    .story-card:nth-last-child(-n+2) { border-bottom: none; }
+    .story-tag { background: var(--ink); color: var(--yellow); font-family: 'Space Mono', monospace; font-size: 10px; padding: 4px 12px; border-radius: 999px; display: inline-block; margin-bottom: 16px; letter-spacing: .06em; }
+    .story-portrait { width: 72px; height: 72px; object-fit: cover; border: var(--stroke); box-shadow: var(--shadow); display: block; margin-bottom: 16px; }
+    .story-card h3 { font-family: 'Lilita One', cursive; font-size: 18px; margin-bottom: 12px; line-height: 1.25; }
+    .story-card p { font-size: 14px; line-height: 1.65; opacity: .8; }
+    .story-attribution { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .05em; margin-top: 16px; opacity: .6 !important; display: block; }
+    .story-photo-card { position: relative; overflow: hidden; padding: 0; min-height: 320px; display: flex; align-items: flex-end; }
+    .story-photo-card-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .story-photo-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,16,8,.88) 45%, rgba(26,16,8,.25) 100%); }
+    .story-photo-card-content { position: relative; z-index: 2; padding: 28px; color: var(--cream); }
+    .story-photo-card-content p { font-size: 16px; font-weight: 600; line-height: 1.5; opacity: 1 !important; margin-bottom: 16px; color: var(--cream); }
+
+    /* ── AWARDS — contrasting panels ── */
+    .awards-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 48px; border: var(--stroke); }
+    .award-panel { padding: 52px 44px; border-right: var(--stroke); }
+    .award-panel:last-child { border-right: none; }
+    .award-panel--light { background: var(--cream); }
+    .award-panel--dark { background: var(--ink); }
+    .award-panel--dark h3 { color: var(--yellow); }
+    .award-panel--dark p { color: rgba(253,246,236,.75); }
+    .award-panel--dark .award-past { background: rgba(255,255,255,.07); border: 1.5px solid rgba(255,255,255,.15); box-shadow: none; }
+    .award-panel--dark .award-past-label { color: rgba(253,246,236,.5); }
+    .award-panel--dark .award-past-name { color: var(--yellow); }
+    .award-icon { font-family: 'Lilita One', cursive; font-size: 72px; color: var(--yellow); -webkit-text-stroke: 2px var(--ink); display: block; line-height: 1; margin-bottom: 20px; }
+    .award-panel--dark .award-icon { -webkit-text-stroke: 2px var(--teal); }
+    .award-panel h3 { font-family: 'Lilita One', cursive; font-size: 30px; margin-bottom: 12px; }
+    .award-panel p { font-size: 15px; line-height: 1.65; opacity: .75; margin-bottom: 24px; }
+    .award-past { background: var(--cream); border: var(--stroke); padding: 16px 20px; }
+    .award-past-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .08em; opacity: .6; margin-bottom: 6px; }
+    .award-past-name { font-family: 'Lilita One', cursive; font-size: 17px; margin-bottom: 10px; }
+    .award-read-more { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .05em; color: var(--magenta); text-decoration: none; display: inline-block; border-bottom: 1.5px solid var(--magenta); padding-bottom: 1px; transition: opacity .15s; }
+    .award-read-more:hover { opacity: .7; }
+    .award-panel--dark .award-read-more { color: var(--teal); border-color: var(--teal); }
+
+    /* ── SECOND TICKER ── */
+    .ticker-wrap-alt { background: var(--yellow); border-top: var(--stroke); border-bottom: var(--stroke); overflow: hidden; white-space: nowrap; padding: 10px 0; position: relative; z-index: 10; }
+    .ticker-inner-alt { display: inline-flex; animation: ticker-rtl 32s linear infinite; }
+    .ticker-inner-alt span { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: .08em; padding: 0 40px; color: var(--ink); }
+    .ticker-inner-alt span.dot-alt { color: var(--magenta); padding: 0 4px; display: inline-block; animation: tickerDotWiggle 2.5s ease-in-out infinite; }
+    @keyframes ticker-rtl { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+
+    /* ── EXPLORE STRIP ── */
+    .explore-strip { background: var(--cream); border-top: var(--stroke); padding: 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+    .explore-label { font-family: 'Lilita One', cursive; font-size: 28px; color: var(--ink); }
+    .explore-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .explore-btn { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: .06em; color: var(--ink); text-decoration: none; padding: 12px 28px; border: var(--stroke); box-shadow: var(--shadow); transition: transform .12s cubic-bezier(0.34,1.56,0.64,1), box-shadow .12s; display: inline-block; background: var(--cream); }
+    .explore-btn:hover { transform: translate(-3px,-3px); box-shadow: var(--shadow-lg); }
+    .explore-btn--yellow { background: var(--yellow); }
+    .explore-btn--ink { background: var(--ink); color: var(--cream); }
+
+    /* ── SCHEDULE ── */
+    .schedule { background: var(--ink); border-top: var(--stroke); border-bottom: var(--stroke); }
+    .schedule h2 { color: var(--yellow); -webkit-text-stroke: 1px var(--cream); }
+    .schedule .section-label { color: var(--cream); opacity: .5; }
+    .schedule-table { width: 100%; border-collapse: collapse; margin-top: 48px; border: var(--stroke); }
+    .schedule-table th { background: var(--yellow); border: var(--stroke); padding: 14px 20px; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: .06em; text-align: left; }
+    .schedule-table td { border: var(--stroke); padding: 14px 20px; color: var(--cream); font-size: 14px; }
+    .schedule-table tr:nth-child(even) td { background: rgba(255,255,255,.05); }
+    .sch-pill { background: var(--magenta); color: var(--cream); font-family: 'Space Mono', monospace; font-size: 10px; padding: 3px 10px; border-radius: 999px; display: inline-block; letter-spacing: .06em; }
+
+    /* ── PROCESS ── */
+    .process-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: var(--stroke); margin-top: 48px; }
+    .process-step { border-right: var(--stroke); padding: 36px 28px; }
+    .process-step:last-child { border-right: none; }
+    .process-num { font-family: 'Lilita One', cursive; font-size: 80px; color: var(--magenta); -webkit-text-stroke: 2px var(--ink); line-height: 1; display: block; margin-bottom: 16px; }
+    .process-step h3 { font-family: 'Lilita One', cursive; font-size: 24px; margin-bottom: 10px; }
+    .process-step p { font-size: 15px; line-height: 1.6; opacity: .75; }
+    .process-deadline { background: var(--ink); color: var(--yellow); font-family: 'Space Mono', monospace; font-size: 11px; padding: 6px 14px; border-radius: 999px; display: inline-block; margin-top: 16px; letter-spacing: .06em; }
+    .cta-block { background: var(--magenta); border: var(--stroke); box-shadow: var(--shadow-lg); padding: 60px 40px; margin-top: 56px; text-align: center; }
+    .cta-block h2 { color: var(--cream); -webkit-text-stroke: 1px var(--ink); margin-bottom: 16px; }
+    .cta-block p { color: var(--cream); font-size: 17px; margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--ink); border-top: var(--stroke); padding: 40px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 32px; }
+    .footer-logo { font-family: 'Lilita One', cursive; font-size: 20px; color: var(--cream); }
+    .footer-logo span { color: var(--yellow); }
+    .footer-tagline { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--cream); opacity: .4; letter-spacing: .06em; margin-top: 6px; }
+    .footer-links { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .footer-links a { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--cream); opacity: .6; letter-spacing: .06em; text-decoration: none; transition: opacity .15s, color .15s; }
+    .footer-links a:hover { opacity: 1; color: var(--yellow); }
+    .footer-right { text-align: right; }
+    .footer-right p { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--cream); opacity: .35; letter-spacing: .06em; }
+
+    /* ── TABLET (769px – 1024px) ── */
+    @media (max-width: 1024px) {
+      section { padding: 72px 32px; }
+      .rule { margin: 0 32px; }
+      .hero { padding: 0 32px; }
+      .hero h1 { font-size: clamp(44px, 5.5vw, 80px); }
+      /* Activities → 2-col on tablet */
+      .activities-grid { grid-template-columns: repeat(2, 1fr); }
+      .activity-cell:nth-child(4n)      { border-right: var(--stroke); }
+      .activity-cell:nth-child(2n)      { border-right: none; }
+      .activity-cell:nth-last-child(-n+4) { border-bottom: var(--stroke); }
+      .activity-cell:nth-last-child(-n+2) { border-bottom: none; }
+      .activity-cta { border-right: none; border-bottom: none; }
+      /* Press — tighter */
+      .press-qmark { font-size: 80px; }
+      .press-quote-row { grid-template-columns: 56px 1fr 120px; gap: 24px; }
+      .press-quote-row blockquote { font-size: 16px; }
+      /* Awards padding */
+      .award-panel { padding: 40px 32px; }
+    }
+
+    /* ── MOBILE (≤ 768px) ── */
+    @media (max-width: 768px) {
+      /* Nav: show Apply Now button always */
+      nav { padding: 12px 20px; }
+      .nav-links { display: none; }
+      .nav-cta--mobile { display: inline-block !important; }
+      /* Sections */
+      section { padding: 60px 20px; }
+      .rule { margin: 0 20px; }
+      /* Hero */
+      .hero { padding: 0 20px; grid-template-columns: 1fr; grid-template-rows: auto auto auto; min-height: auto; }
+      .hero-content { padding: 56px 0 28px; grid-column: 1; grid-row: 1; }
+      .hero-image-col { grid-column: 1; grid-row: 2; padding: 0 0 36px; }
+      .hero-photo { height: 240px; }
+      .hero-stats { grid-column: 1; grid-row: 3; flex-direction: column; }
+      .hero-stat { border-right: none; border-bottom: var(--stroke); }
+      .hero-stat:last-child { border-bottom: none; }
+      /* About */
+      .about-grid, .why-grid { grid-template-columns: 1fr; }
+      .about-pillars { grid-template-columns: 1fr 1fr; }
+      /* Journey */
+      .journey-timeline { flex-direction: column; gap: 0; }
+      .journey-timeline::before { top: 34px; bottom: 0; left: 34px; right: auto; width: 2.5px; height: auto; }
+      .journey-node { padding: 0 0 32px 0; align-items: flex-start; text-align: left; }
+      .journey-node:last-child { padding-bottom: 0; }
+      /* Activities: 2-col with corrected borders */
+      .activities-grid { grid-template-columns: 1fr 1fr; }
+      .activity-cell:nth-child(4n)        { border-right: var(--stroke); }
+      .activity-cell:nth-child(2n)        { border-right: none; }
+      .activity-cell:nth-last-child(-n+4) { border-bottom: var(--stroke); }
+      .activity-cell:nth-last-child(-n+2) { border-bottom: none; }
+      .activity-cta { border-right: none; border-bottom: none; }
+      /* Why */
+      .why-data { grid-template-columns: 1fr 1fr; }
+      /* Press */
+      .press-quote-row { grid-template-columns: 44px 1fr; gap: 16px; }
+      .press-source { display: none; }
+      .press-qmark { font-size: 72px; }
+      .press-quote-row blockquote { font-size: 15px; }
+      /* Stories */
+      .stories-grid { grid-template-columns: 1fr; }
+      .story-card { border-right: none; border-bottom: var(--stroke); }
+      .story-card:nth-child(2n) { border-right: none; }
+      .story-card:last-child { border-bottom: none; }
+      .story-photo-card { min-height: 240px; border-bottom: none; }
+      /* Awards */
+      .awards-panels { grid-template-columns: 1fr; }
+      .award-panel { border-right: none; border-bottom: var(--stroke); }
+      .award-panel:last-child { border-bottom: none; }
+      /* Schedule: horizontal scroll */
+      .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: var(--stroke); margin-top: 48px; }
+      .schedule-table { margin-top: 0; border: none; min-width: 560px; }
+      /* Process */
+      .process-steps { grid-template-columns: 1fr; }
+      .process-step { border-right: none; border-bottom: var(--stroke); }
+      .process-step:last-child { border-bottom: none; }
+      .process-num { font-size: 60px; }
+      /* Explore */
+      .explore-strip { padding: 28px 20px; flex-direction: column; align-items: flex-start; }
+      .explore-label { font-size: 22px; }
+      /* Footer */
+      footer { grid-template-columns: 1fr; gap: 20px; }
+      .footer-right { text-align: left; }
+      .footer-links { align-items: flex-start; }
+    }
+
+    /* ── SMALL MOBILE (≤ 480px) ── */
+    @media (max-width: 480px) {
+      section { padding: 48px 16px; }
+      .rule { margin: 0 16px; }
+      .hero { padding: 0 16px; }
+      .hero h1 { font-size: 40px; }
+      .hero p { font-size: 16px; }
+      .hero-btns { flex-direction: column; }
+      .btn-primary, .btn-secondary { width: 100%; text-align: center; box-sizing: border-box; }
+      .hero-photo { height: 200px; }
+      .hero-stat-num { font-size: 32px; }
+      /* Activities → 1-col on very small phones */
+      .activities-grid { grid-template-columns: 1fr; }
+      .activity-cell { border-right: none; border-bottom: var(--stroke); }
+      .activity-cell:nth-child(2n) { border-right: none; }
+      .activity-cell:nth-last-child(-n+2) { border-bottom: var(--stroke); }
+      .activity-cell:last-child { border-bottom: none; }
+      .activity-cta { border-bottom: none; }
+      /* About pillars: 1-col */
+      .about-pillars { grid-template-columns: 1fr; }
+      /* Journey circle smaller */
+      .journey-circle { width: 56px; height: 56px; font-size: 22px; }
+      .journey-timeline::before { left: 28px; }
+      /* Why data: 1-col */
+      .why-data { grid-template-columns: 1fr; }
+      .data-cell:nth-child(2n) { border-right: none; }
+      .data-cell { border-right: none; }
+      /* Press */
+      .press-qmark { font-size: 56px; }
+      .press-quote-row { grid-template-columns: 36px 1fr; gap: 12px; }
+      /* Awards padding */
+      .award-panel { padding: 28px 20px; }
+      /* Process */
+      .process-num { font-size: 48px; }
+      /* Explore */
+      .explore-btn { width: 100%; text-align: center; box-sizing: border-box; }
+      .explore-btns { width: 100%; flex-direction: column; }
+      /* CTA */
+      .cta-block { padding: 40px 20px; }
+      nav { padding: 10px 16px; }
+      .explore-strip { padding: 24px 16px; }
+      footer { padding: 28px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <span>TINKERHUB CAMPUS LEADERSHIP PROGRAMME 2026</span>
+    <span class="dot">★</span>
+    <span>APPLICATIONS OPEN — DEADLINE MARCH 26</span>
+    <span class="dot">★</span>
+    <span>ONBOARDING CAMP · WINTER CAMP · SUMMER CAMP · GRADUATION</span>
+    <span class="dot">★</span>
+    <span>EXCLUSIVE FOR CAMPUS LEADS ACROSS KERALA</span>
+    <span class="dot">★</span>
+    <span>66+ CAMPUSES · 16,977+ MAKERS</span>
+    <span class="dot">★</span>
+    <span>SELECTION CAMP — END OF APRIL</span>
+    <span class="dot">★</span>
+    <span>TINKERHUB CAMPUS LEADERSHIP PROGRAMME 2026</span>
+    <span class="dot">★</span>
+    <span>APPLICATIONS OPEN — DEADLINE MARCH 26</span>
+    <span class="dot">★</span>
+    <span>ONBOARDING CAMP · WINTER CAMP · SUMMER CAMP · GRADUATION</span>
+    <span class="dot">★</span>
+    <span>EXCLUSIVE FOR CAMPUS LEADS ACROSS KERALA</span>
+    <span class="dot">★</span>
+    <span>66+ CAMPUSES · 16,977+ MAKERS</span>
+    <span class="dot">★</span>
+    <span>SELECTION CAMP — END OF APRIL</span>
+    <span class="dot">★</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Tinker<span>Hub</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#journey">Journey</a></li>
+    <li><a href="#activities">Activities</a></li>
+    <li><a href="#why">Why Kerala</a></li>
+    <li><a href="#stories">Stories</a></li>
+    <li><a href="#awards">Awards</a></li>
+    <li><a href="#apply">Apply</a></li>
+    <li><a href="https://airtable.com/appdFV7VvqOIlQ36v/shrKV8t5K5JgtfUOj" target="_blank" class="nav-cta">Apply Now</a></li>
+  </ul>
+  <a href="https://airtable.com/appdFV7VvqOIlQ36v/shrKV8t5K5JgtfUOj" target="_blank" class="nav-cta nav-cta--mobile" style="display:none;">Apply Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blobs">
+    <svg class="blob-1" width="320" height="280" style="top:-20px;left:30px;opacity:.65;" viewBox="0 0 320 280">
+      <path d="M260,30 C310,30 310,100 275,140 C240,180 185,200 140,182 C95,164 60,128 78,82 C96,36 210,30 260,30Z" fill="#00b4a6" stroke="#1a1008" stroke-width="3"/>
+    </svg>
+    <svg class="blob-2" width="220" height="200" style="bottom:80px;left:-10px;opacity:.75;" viewBox="0 0 220 200">
+      <path d="M50,165 C18,148 10,108 26,74 C42,40 92,16 132,32 C172,48 190,90 172,132 C154,174 82,182 50,165Z" fill="#f5c700" stroke="#1a1008" stroke-width="3"/>
+    </svg>
+  </div>
+  <div class="hero-content">
+    <div class="pill hero-pill-anim">Campus Leadership Programme 2026</div>
+    <h1>
+      <span class="hero-word">Lead</span> <span class="hero-word">the</span><br>
+      <span class="hero-word">Learning</span><br>
+      <span class="hero-word">Revolution.</span>
+    </h1>
+    <p class="hero-p-anim">Most college programmes teach you to clear exams. This one teaches you to actually build something — a community, a culture, a campus where people want to show up. Backed by 16,000+ makers across Kerala.</p>
+    <div class="hero-btns hero-btns-anim">
+      <a href="https://airtable.com/appdFV7VvqOIlQ36v/shrKV8t5K5JgtfUOj" target="_blank" class="btn-primary">Apply Now</a>
+      <a href="#about" class="btn-secondary">What's this?</a>
+    </div>
+  </div>
+  <div class="hero-image-col hero-img-anim">
+    <div class="hero-photo-wrap">
+      <img src="images/camp.jpg" alt="100+ makers at TinkerHub Winter Camp" class="hero-photo" />
+      <div class="hero-photo-badge">100+ Makers · Winter Camp 2025</div>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat hero-stat-anim">
+      <span class="hero-stat-num" data-count data-target="16977" data-suffix="+">16,977+</span>
+      <span class="hero-stat-label">Makers across Kerala</span>
+    </div>
+    <div class="hero-stat hero-stat-anim">
+      <span class="hero-stat-num" data-count data-target="66" data-suffix="+">66+</span>
+      <span class="hero-stat-label">Campus chapters</span>
+    </div>
+    <div class="hero-stat hero-stat-anim">
+      <span class="hero-stat-num">300–400</span>
+      <span class="hero-stat-label">Makers per active campus</span>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO STRIP -->
+<div class="photo-strip">
+  <img src="images/community-event.jpg" alt="TinkerHub community event, SCMS Kerala" class="photo-strip-img" />
+  <div class="photo-strip-caption">Community gathering · SCMS, Kerala · 2024</div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label reveal">What is this</div>
+  <h2 class="reveal">The Campus Leadership<br>Programme</h2>
+  <div class="about-grid">
+    <div class="about-copy">
+      <p class="reveal">Every year, TinkerHub picks a cohort of college students — not necessarily the toppers or the most "qualified" — just people who are genuinely curious and want to make their campus a better place. These are the Campus Leads. They build maker communities from scratch. No script, no shortcuts.</p>
+      <p class="reveal">You'll get four residential camps, a cohort of people who actually give a damn, mentoring from leads who've done it before you, and access to every TinkerHub programme as both a participant and an organiser. The thing you're building isn't a club — it's a culture.</p>
+      <p class="reveal">The goal isn't one great campus year. It's building the kind of person who, when things get uncertain (and they will), knows how to get people together and figure it out. That's a skill no syllabus teaches.</p>
+      <div class="pull-quote reveal">
+        <svg class="pull-quote-asterisk" width="36" height="36" viewBox="0 0 40 40">
+          <path d="M20 2 L22 17 L37 12 L27 23 L37 28 L22 23 L20 38 L18 23 L3 28 L13 23 L3 12 L18 17Z" fill="var(--ink)"/>
+        </svg>
+        "The best way to learn is to build something that matters. The best way to lead is to make room for others to do the same."
+      </div>
+    </div>
+    <div class="about-pillars">
+      <div class="pillar-card reveal pop" data-d="1">
+        <span class="pillar-num">01</span>
+        <h3>Leadership Camps</h3>
+        <p>Four residential camps over the year — where you meet your cohort, build your plan, and figure out what kind of lead you want to be.</p>
+      </div>
+      <div class="pillar-card reveal pop" data-d="2">
+        <span class="pillar-num">02</span>
+        <h3>Real Network</h3>
+        <p>Relationships with makers, mentors, and alumni across Kerala's most active campuses. Not LinkedIn connections — actual people who pick up the phone.</p>
+      </div>
+      <div class="pillar-card reveal pop" data-d="3">
+        <span class="pillar-num">03</span>
+        <h3>Learning Programmes</h3>
+        <p>Study Jams, workshops, hackathons — you're both the organiser and the participant. You learn by doing, and you do it with others.</p>
+      </div>
+      <div class="pillar-card reveal pop" data-d="4">
+        <span class="pillar-num">04</span>
+        <h3>Future Navigation</h3>
+        <p>The world keeps shifting. You'll learn to lead through uncertainty — which is honestly the most useful thing you'll ever learn in college.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- JOURNEY — timeline -->
+<section id="journey" class="journey">
+  <div class="section-label reveal">Your year as a lead</div>
+  <h2 class="reveal">The Lead Journey</h2>
+  <div class="journey-timeline">
+    <div class="journey-node">
+      <div class="journey-circle reveal pop" data-d="1">01</div>
+      <span class="step-pill reveal" data-d="2">April 2026</span>
+      <h3 class="reveal" data-d="2">Onboarding Camp</h3>
+      <p class="reveal" data-d="3">First camp. Meet your full cohort, get the TinkerHub philosophy download, and start planning what your chapter actually looks like this year.</p>
+    </div>
+    <div class="journey-node">
+      <div class="journey-circle reveal pop" data-d="2">02</div>
+      <span class="step-pill reveal" data-d="3">May–Oct 2026</span>
+      <h3 class="reveal" data-d="3">Building Season</h3>
+      <p class="reveal" data-d="4">This is where you run it. Events, workshops, hackathons — your campus, your call. Mentoring is there when you need it.</p>
+    </div>
+    <div class="journey-node">
+      <div class="journey-circle reveal pop" data-d="3">03</div>
+      <span class="step-pill reveal" data-d="4">Dec 2026</span>
+      <h3 class="reveal" data-d="4">Winter Camp</h3>
+      <p class="reveal" data-d="5">Mid-year check-in. Share what worked, what flopped, and what surprised you — then recalibrate with everyone doing the same thing across Kerala.</p>
+    </div>
+    <div class="journey-node">
+      <div class="journey-circle reveal pop" data-d="4">04</div>
+      <span class="step-pill reveal" data-d="5">May 2027</span>
+      <h3 class="reveal" data-d="5">Summer Camp</h3>
+      <p class="reveal" data-d="6">Deep-dive on leadership and curriculum. You help shape what the next cohort goes through. Full circle.</p>
+    </div>
+    <div class="journey-node">
+      <div class="journey-circle reveal pop" data-d="5">05</div>
+      <span class="step-pill reveal" data-d="6">Jun 2027</span>
+      <h3 class="reveal" data-d="6">Graduation</h3>
+      <p class="reveal" data-d="7">Cap off the year with your cohort. You join the alumni network and become the person a future lead calls when they're stuck.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ACTIVITIES -->
+<section id="activities">
+  <div class="section-label reveal">What happens on campus</div>
+  <h2 class="reveal">Major Activities</h2>
+  <div class="activities-grid">
+    <div class="activity-cell reveal" data-d="1">
+      <img src="images/useless-projects.jpg" alt="Useless Projects 2.0" class="activity-cell-img" />
+      <div class="activity-cell-content">
+        <span class="act-num">01</span>
+        <h3>Useless Projects</h3>
+        <p>Build the most gloriously pointless thing you can imagine. No pitch deck, no serious use case. Just the raw joy of making something exist that didn't before.</p>
+      </div>
+    </div>
+    <div class="activity-cell reveal" data-d="2">
+      <img src="images/tinkerhack.jpg" alt="Tink-Her-Hack participants" class="activity-cell-img" />
+      <div class="activity-cell-content">
+        <span class="act-num">02</span>
+        <h3>Tink-Her-Hack</h3>
+        <p>Kerala's largest women-in-tech hackathon. Run annually at campus and state level — because the maker movement is only as strong as who's in the room.</p>
+      </div>
+    </div>
+    <div class="activity-cell reveal" data-d="3">
+      <div class="activity-cell-content">
+        <span class="act-num">03</span>
+        <h3>Beyond the Blueprint</h3>
+        <p>Real talks from people actually doing things — builders, founders, designers. No corporate BS, no polished decks. Just honest conversations about the messy real world.</p>
+      </div>
+    </div>
+    <div class="activity-cell reveal" data-d="4">
+      <div class="activity-cell-content">
+        <span class="act-num">04</span>
+        <h3>Study Jams</h3>
+        <p>Multi-week cohort-based learning on specific skills — Python, product design, open source. Structured enough to actually finish, flexible enough to work in college.</p>
+      </div>
+    </div>
+    <div class="activity-cell reveal" data-d="5">
+      <div class="activity-cell-content">
+        <span class="act-num">05</span>
+        <h3>Open Mics</h3>
+        <p>Show up. Share what you're building, thinking, or obsessing over. Half-baked ideas welcome. Nobody's checking if it's polished — just whether you actually showed up.</p>
+      </div>
+    </div>
+    <div class="activity-cell reveal" data-d="6">
+      <div class="activity-cell-content">
+        <span class="act-num">06</span>
+        <h3>Maker Stories</h3>
+        <p>We document the process, not just the outcome. Because how someone built something is usually way more interesting than what they built.</p>
+      </div>
+    </div>
+    <div class="activity-cell reveal" data-d="7">
+      <div class="activity-cell-content">
+        <span class="act-num">07</span>
+        <h3>Community Building</h3>
+        <p>Onboarding drives, orientation events, cross-campus collabs, inter-chapter meetups. The unglamorous work that makes everything else actually happen.</p>
+      </div>
+    </div>
+    <div class="activity-cell activity-cta reveal" data-d="8">
+      <div class="activity-cell-content">
+        <p>And a lot more — shaped entirely by you.</p>
+        <a href="https://airtable.com/appdFV7VvqOIlQ36v/shrKV8t5K5JgtfUOj" target="_blank" class="btn-primary" style="font-size:15px;padding:12px 28px;">Apply to Lead</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECOND TICKER -->
+<div class="ticker-wrap-alt">
+  <div class="ticker-inner-alt">
+    <span>BUILD STUFF THAT MATTERS</span>
+    <span class="dot-alt">★</span>
+    <span>SHOW UP FOR YOUR CAMPUS</span>
+    <span class="dot-alt">★</span>
+    <span>NO EXPERIENCE NEEDED — JUST CURIOSITY</span>
+    <span class="dot-alt">★</span>
+    <span>66+ CAMPUSES ACROSS KERALA</span>
+    <span class="dot-alt">★</span>
+    <span>16,977+ MAKERS AND COUNTING</span>
+    <span class="dot-alt">★</span>
+    <span>BE THE ONE WHO BUILDS THIS</span>
+    <span class="dot-alt">★</span>
+    <span>APPLICATIONS CLOSE MARCH 26</span>
+    <span class="dot-alt">★</span>
+    <span>BUILD STUFF THAT MATTERS</span>
+    <span class="dot-alt">★</span>
+    <span>SHOW UP FOR YOUR CAMPUS</span>
+    <span class="dot-alt">★</span>
+    <span>NO EXPERIENCE NEEDED — JUST CURIOSITY</span>
+    <span class="dot-alt">★</span>
+    <span>66+ CAMPUSES ACROSS KERALA</span>
+    <span class="dot-alt">★</span>
+    <span>16,977+ MAKERS AND COUNTING</span>
+    <span class="dot-alt">★</span>
+    <span>BE THE ONE WHO BUILDS THIS</span>
+    <span class="dot-alt">★</span>
+    <span>APPLICATIONS CLOSE MARCH 26</span>
+    <span class="dot-alt">★</span>
+  </div>
+</div>
+
+<hr class="rule" />
+
+<!-- WHY KERALA -->
+<section id="why" class="why">
+  <div class="section-label reveal">The bigger picture</div>
+  <h2 class="reveal">Why Every Kerala Campus<br>Needs a Maker Community</h2>
+  <div class="why-grid">
+    <div>
+      <div class="why-data">
+        <div class="data-cell reveal pop" data-d="1">
+          <span class="data-num" data-count data-target="700" data-suffix="+">700+</span>
+          <p>Engineering and arts colleges across Kerala — most without a structured maker or builder community</p>
+        </div>
+        <div class="data-cell reveal pop" data-d="2">
+          <span class="data-num" data-count data-target="16977">16,977</span>
+          <p>TinkerHub members across Kerala — proof that there is hunger to learn and build</p>
+        </div>
+        <div class="data-cell reveal pop" data-d="3">
+          <span class="data-num" data-count data-target="50" data-suffix="%">50%</span>
+          <p>Women participants in TinkerHub events — Kerala's maker movement is equitable by design</p>
+        </div>
+        <div class="data-cell reveal pop" data-d="4">
+          <span class="data-num" data-count data-target="75" data-suffix="%">75%</span>
+          <p>First-time builders at TinkerHub programmes — the community reaches students who've never built before</p>
+        </div>
+      </div>
+    </div>
+    <div class="why-reasons">
+      <div class="reason reveal" data-d="1">
+        <span class="reason-num">01</span>
+        <div>
+          <h3>Degrees don't build builders</h3>
+          <p>Curricula teach theory. Campus maker communities create the culture of building, iterating, and shipping that the classroom cannot.</p>
+        </div>
+      </div>
+      <div class="reason reveal" data-d="2">
+        <span class="reason-num">02</span>
+        <div>
+          <h3>Community survives uncertainty</h3>
+          <p>Jobs, skills, and industries shift overnight. A strong peer network is the most resilient career asset you'll ever have. More than any degree.</p>
+        </div>
+      </div>
+      <div class="reason reveal" data-d="3">
+        <span class="reason-num">03</span>
+        <div>
+          <h3>Kerala has the talent, not the platforms</h3>
+          <p>There's no shortage of curious people. What's missing in most colleges is a space where curiosity is taken seriously and acted on.</p>
+        </div>
+      </div>
+      <div class="reason reveal" data-d="4">
+        <span class="reason-num">04</span>
+        <div>
+          <h3>One lead changes everything</h3>
+          <p>One motivated campus lead activates 300–400 makers per year. That's not a programme stat — that's a person's impact.</p>
+        </div>
+      </div>
+      <div class="reason reveal" data-d="5">
+        <span class="reason-num">05</span>
+        <div>
+          <h3>This is how Kerala competes globally</h3>
+          <p>The state's future in tech and entrepreneurship depends on a generation of self-directed, collaborative builders. That starts in college. That starts with you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- PRESS -->
+<section id="press">
+  <div class="section-label reveal">People are talking</div>
+  <h2 class="reveal">TinkerHub in the Press</h2>
+  <div class="press-editorial">
+    <div class="press-quote-row reveal">
+      <span class="press-qmark">"</span>
+      <blockquote>TinkerHub grew from a small student tech club into Kerala's largest youth-led maker movement, creating a grassroots learning revolution that transformed how thousands of students think about technology and careers.</blockquote>
+      <span class="press-source">YourStory</span>
+    </div>
+    <div class="press-quote-row reveal">
+      <span class="press-qmark">"</span>
+      <blockquote>TinkerHub represents a community-led approach to technology learning that has scaled across an entire state. Their model — peer-to-peer, campus-first, curiosity-driven — is one of the most effective grassroots tech education initiatives in the country.</blockquote>
+      <span class="press-source">India FOSS</span>
+    </div>
+    <div class="press-quote-row reveal">
+      <span class="press-qmark">"</span>
+      <blockquote>The best thing you can do for a student is not to teach them a skill, but to put them in a community where they want to learn. That community is what TinkerHub campus leads are building every day.</blockquote>
+      <span class="press-source">TinkerHub Blog</span>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- STORIES -->
+<section id="stories" class="stories">
+  <div class="section-label reveal">Real talk from leads</div>
+  <h2 class="reveal">Stories from Campus</h2>
+  <div class="stories-grid">
+
+    <div class="story-card reveal" data-d="1">
+      <span class="story-tag">Campus Lead</span>
+      <img src="images/community-portrait.jpg" alt="Suhana, Campus Lead, CoE Perumon" class="story-portrait" />
+      <h3>"It's about taking the first step and learning slowly."</h3>
+      <p>This past year we've seen our community grow. We've seen more people join in and more curious minds come in. We've seen people try, build, and share what they love. You get to bring people together, try new things, and learn as you go. And in between all of that, you get to build something that truly matters.</p>
+      <span class="story-attribution">— Suhana · Campus Lead · College of Engineering, Perumon</span>
+    </div>
+
+    <div class="story-card reveal" data-d="2">
+      <span class="story-tag">Best Campus · CoE Punnapra</span>
+      <img src="images/vivek.jpg" alt="Vivek Venugopal, Campus Lead, CoE Punnapra" class="story-portrait" />
+      <h3>"I build the kind of campus I want to find."</h3>
+      <p>Two years with TinkerHub transformed me from a regular student into a community leader. We overcame low participation, attendance friction, resource gaps — collaborating with faculty, securing support, setting up hardware sessions. We won Best Campus of the Month and built our own MAKERSPACE. This journey was never mine alone.</p>
+      <span class="story-attribution">— Vivek Venugopal · Campus Lead · College of Engineering, Punnapra</span>
+    </div>
+
+    <div class="story-card reveal" data-d="3">
+      <span class="story-tag">Maker · Regular Builder</span>
+      <h3>Devadath P R — from first-time builder to campus backbone</h3>
+      <p>Devadath joined TinkerHub as a curious first-year and became the kind of maker who showed up for everything. Recognised as Maker of the Month for contributing to multiple projects, mentoring peers, and helping grow his campus from a handful of regulars to a thriving chapter.</p>
+    </div>
+
+    <div class="story-card story-photo-card reveal" data-d="4">
+      <img src="images/tinkerhack.jpg" alt="Makers at TinkerHub" class="story-photo-card-bg" />
+      <div class="story-photo-card-overlay"></div>
+      <div class="story-photo-card-content">
+        <p>More stories from campuses across Kerala.</p>
+        <a href="https://airtable.com/appdFV7VvqOIlQ36v/shrKV8t5K5JgtfUOj" target="_blank" class="btn-primary" style="font-size:14px;padding:10px 24px;background:var(--yellow);color:var(--ink);">Start Your Story — Apply</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="section-label reveal">Recognition</div>
+  <h2 class="reveal">Awards &amp; Recognition</h2>
+  <div class="awards-panels">
+    <div class="award-panel award-panel--light reveal from-left">
+      <span class="award-icon">★</span>
+      <h3>Campus of the Month</h3>
+      <p>Awarded monthly to the campus chapter that demonstrates the most intentional community building — not by numbers alone, but by the depth of the learning environment they create.</p>
+      <div class="award-past">
+        <div class="award-past-label">Campus of the Month · Jan 2025</div>
+        <div class="award-past-name">College of Engineering, Karunagappally</div>
+        <a href="https://medium.com/tinkerhub/campus-of-the-month-jan-25-college-of-engineering-karunagappally-where-curiosity-meets-a65524f0ca07" target="_blank" class="award-read-more">Read the story →</a>
+      </div>
+    </div>
+    <div class="award-panel award-panel--dark reveal from-right">
+      <span class="award-icon" style="color:var(--teal);">◆</span>
+      <h3>Maker of the Month</h3>
+      <p>Awarded to the individual maker who shows insane curiosity, consistent building, and a spirit of sharing — someone who makes the community better just by being in it.</p>
+      <div class="award-past">
+        <div class="award-past-label">Maker of the Month · Nov 2025</div>
+        <div class="award-past-name">Aksa Rose — "Build Before You Figure It Out"</div>
+        <a href="https://medium.com/tinkerhub/maker-of-the-month-nov-25-aksa-rose-build-before-you-figure-it-out-244e2bcdd8b7" target="_blank" class="award-read-more">Read the story →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- SCHEDULE -->
+<section id="schedule" class="schedule">
+  <div class="section-label reveal">The year ahead</div>
+  <h2 class="reveal">2026–27 Programme Schedule</h2>
+  <div class="table-scroll">
+  <table class="schedule-table reveal">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Milestone / Activity</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="sch-pill">Mar 26</span></td>
+        <td>Application Deadline</td>
+        <td>Video application form closes. Submit before midnight.</td>
+      </tr>
+      <tr>
+        <td><span class="sch-pill">Apr 2026</span></td>
+        <td>Online Interviews</td>
+        <td>Shortlisted candidates interview with the TinkerHub team.</td>
+      </tr>
+      <tr>
+        <td><span class="sch-pill">Late Apr</span></td>
+        <td>Selection Camp</td>
+        <td>In-person residential camp. Final selection of the 2026 cohort.</td>
+      </tr>
+      <tr>
+        <td><span class="sch-pill">May 2026</span></td>
+        <td>Onboarding Camp</td>
+        <td>First full cohort camp. Philosophy, planning, campus goal-setting.</td>
+      </tr>
+      <tr>
+        <td><span class="sch-pill">May–Oct</span></td>
+        <td>Building Season</td>
+        <td>Study Jams, Open Mics, Tink-Her-Hack, Useless Projects, campus events.</td>
+      </tr>
+      <tr>
+        <td><span class="sch-pill">Dec 2026</span></td>
+        <td>Winter Camp</td>
+        <td>Mid-cohort residential. Cross-campus sharing, curriculum co-creation.</td>
+      </tr>
+      <tr>
+        <td><span class="sch-pill">Jan–Apr 27</span></td>
+        <td>Sprint Season</td>
+        <td>Beyond the Blueprint series, project showcases, community building drives.</td>
+      </tr>
+      <tr>
+        <td><span class="sch-pill">May 2027</span></td>
+        <td>Summer Camp</td>
+        <td>Leadership deep-dive. Vision for the next cohort. Alumni integration.</td>
+      </tr>
+      <tr>
+        <td><span class="sch-pill">Jun 2027</span></td>
+        <td>Graduation</td>
+        <td>Celebrate the cohort. Awards. Transition to TinkerHub alumni network.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- APPLICATION PROCESS -->
+<section id="apply">
+  <div class="section-label reveal">How it works</div>
+  <h2 class="reveal">The Application Process</h2>
+  <div class="process-steps">
+    <div class="process-step reveal" data-d="1">
+      <span class="process-num">01</span>
+      <h3>Fill the Form</h3>
+      <p>Tell us about yourself, your campus, and why you want to build this. There's a short video question — not a pitch, just you talking. We want to see the real you, not a rehearsed version.</p>
+      <div class="process-deadline">Deadline: March 26, 2026</div>
+    </div>
+    <div class="process-step reveal" data-d="2">
+      <span class="process-num">02</span>
+      <h3>Online Interview</h3>
+      <p>Shortlisted applicants have a video call with the TinkerHub team. Expect real conversations about community, learning, and what actually matters to you. No trick questions.</p>
+      <div class="process-deadline">April 2026</div>
+    </div>
+    <div class="process-step reveal" data-d="3" style="border-right:none;">
+      <span class="process-num">03</span>
+      <h3>Selection Camp</h3>
+      <p>The final round is an in-person residential camp. Meet your potential cohort, work through real challenges together, and show us how you lead when it counts.</p>
+      <div class="process-deadline">End of April 2026</div>
+    </div>
+  </div>
+  <div class="cta-block reveal">
+    <h2>Still reading? That's your answer.</h2>
+    <p>March 26 is the deadline. Your campus is waiting. Are you the one who builds this?</p>
+    <a href="https://airtable.com/appdFV7VvqOIlQ36v/shrKV8t5K5JgtfUOj" target="_blank" class="btn-primary" style="font-size:20px;padding:16px 48px;background:var(--yellow);color:var(--ink);">Apply Now</a>
+  </div>
+</section>
+
+<!-- EXPLORE STRIP -->
+<div class="explore-strip reveal">
+  <div class="explore-label">Explore TinkerHub</div>
+  <div class="explore-btns">
+    <a href="https://tinkerhub.org" target="_blank" class="explore-btn explore-btn--yellow">tinkerhub.org</a>
+    <a href="https://wiki.tinkerhub.org" target="_blank" class="explore-btn">wiki.tinkerhub.org</a>
+    <a href="https://medium.com/tinkerhub" target="_blank" class="explore-btn explore-btn--ink">Our Blog</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">Tinker<span>Hub</span></div>
+    <div class="footer-tagline">Campus Leadership Programme 2026</div>
+  </div>
+  <div class="footer-links">
+    <a href="https://wiki.tinkerhub.org" target="_blank">wiki.tinkerhub.org</a>
+    <a href="https://airtable.com/appdFV7VvqOIlQ36v/shrKV8t5K5JgtfUOj" target="_blank">Apply Now →</a>
+    <a href="https://tinkerhub.org" target="_blank">tinkerhub.org</a>
+  </div>
+  <div class="footer-right">
+    <p>Applications close March 26, 2026</p>
+    <p style="margin-top:6px;">© 2026 TinkerHub Foundation</p>
+  </div>
+</footer>
+
+<script>
+  // ── SCROLL REVEAL ──
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // ── COUNT-UP ──
+  function countUp(el) {
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const duration = 1400;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = Math.floor(eased * target);
+      el.textContent = val.toLocaleString('en-IN') + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toLocaleString('en-IN') + suffix;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const countEls = document.querySelectorAll('[data-count]');
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        countUp(entry.target);
+        countObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.6 });
+  countEls.forEach(el => countObserver.observe(el));
+</script>
+
+</body>
+</html>
